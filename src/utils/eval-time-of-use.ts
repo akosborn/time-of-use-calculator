@@ -1,15 +1,15 @@
-export const evalTimeOfUse = (timeBasedUsage: { kWh: number; rate: number }[], optOutRate: number) => {
-  const totalkWh = Math.round(timeBasedUsage.reduce<number>((acc, currentValue) => {
+export const evalTimeOfUse = (timeBasedUsage: { kWh: number; rateInCents: number }[], optOutRateInCents: number) => {
+  const totalkWh = timeBasedUsage.reduce<number>((acc, currentValue) => {
     return acc + currentValue.kWh;
-  }, 0));
-  const optOutPriceInCents = toDecimalPlaces(optOutRate * totalkWh, 2);
+  }, 0);
+  const optOutPriceInCents = optOutRateInCents * totalkWh;
 
-  const timeOfUsePriceInCents = toDecimalPlaces(timeBasedUsage.reduce<number>((acc, currentValue) => {
-    return acc + currentValue.kWh * currentValue.rate;
-  }, 0), 2);
+  const timeOfUsePriceInCents = timeBasedUsage.reduce<number>((acc, currentValue) => {
+    return acc + currentValue.kWh * currentValue.rateInCents;
+  }, 0);
 
-  const timeOfUseDeltaInCents = toDecimalPlaces(timeOfUsePriceInCents - optOutPriceInCents, 2);
-  const timeOfUseDeltaPct = toDecimalPlaces(timeOfUseDeltaInCents / optOutPriceInCents, 2);
+  const timeOfUseDeltaInCents = timeOfUsePriceInCents - optOutPriceInCents;
+  const timeOfUseDeltaPct = timeOfUseDeltaInCents / optOutPriceInCents;
 
   return {
     optOutPriceInCents,
@@ -20,6 +20,6 @@ export const evalTimeOfUse = (timeBasedUsage: { kWh: number; rate: number }[], o
   };
 };
 
-const toDecimalPlaces = (val: number, places: number) => {
-  return Number.parseFloat(val.toFixed(places));
-};
+// const toDecimalPlaces = (val: number, places: number) => {
+//   return Number.parseFloat(val.toFixed(places));
+// };
