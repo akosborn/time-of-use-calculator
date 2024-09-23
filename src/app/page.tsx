@@ -24,12 +24,6 @@ export default function Home() {
     return;
   }
 
-  // const usageInkWh: Record<RateTime, number> = {
-  //   offPeak: 631,
-  //   midPeak: 45,
-  //   onPeak: 91,
-  // };
-
   const usageByTimeOfUseRate = Object.keys(usageByTimeInkWh).reduce<{ kWh: number; rateInCents: number }[]>((acc, timeKey) => {
     const kWh = usageByTimeInkWh[timeKey as unknown as RateTime] as number;
     const rateInCents = rateSummary.timeOfUse[timeKey as unknown as RateTime];
@@ -45,7 +39,16 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Time of Use vs Opt-Out</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">Enter usage in kWh by rate time</p>
+          <div className="mb-4">
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              Determines which of either the Time of Use or Opt-Out Colorado Xcel rate plans is cheaper based on the season and
+              usage across the three different Time of Use rates. The time-based usage can be found on Xcel bills if the
+              account has a smart meter installed.
+            </p>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              Note that rates can change quarterly. This tool only calculates based on the latest rates.
+            </p>
+          </div>
 
           <div className="sm:col-span-3">
             <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
