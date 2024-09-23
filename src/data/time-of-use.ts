@@ -1,3 +1,5 @@
+export const RATES_AS_OF_DATE = '2024-07-21';
+
 export const RATES_2024 = [
   {
     season: 'winter',

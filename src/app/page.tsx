@@ -1,7 +1,7 @@
 'use client';
 
 import {evalTimeOfUse} from '@/utils/eval-time-of-use';
-import {RATES_2024} from '@/data/time-of-use';
+import {RATES_2024, RATES_AS_OF_DATE} from '@/data/time-of-use';
 import {useState} from 'react';
 
 type RateTime = 'offPeak' | 'midPeak' | 'onPeak';
@@ -41,12 +41,15 @@ export default function Home() {
           <h2 className="text-base font-semibold leading-7 text-gray-900">Time of Use vs Opt-Out</h2>
           <div className="mb-4">
             <p className="mt-1 text-sm leading-6 text-gray-600">
-              Determines which of either the Time of Use or Opt-Out Colorado Xcel rate plans is cheaper based on the season and
-              usage across the three different Time of Use rates. The time-based usage can be found on Xcel bills if the
+              Determines which of either the Time of Use or Opt-Out Colorado Xcel rate plans is cheaper based on the season
+              and usage across the three different Time of Use rates. The time-based usage can be found on Xcel bills if the
               account has a smart meter installed.
             </p>
             <p className="mt-1 text-sm leading-6 text-gray-600">
               Note that rates can change quarterly. This tool only calculates based on the latest rates.
+            </p>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
+              Rates as of {RATES_AS_OF_DATE}
             </p>
           </div>
 
