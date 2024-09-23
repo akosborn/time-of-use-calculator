@@ -2,7 +2,8 @@
 
 import {evalTimeOfUse} from '@/utils/eval-time-of-use';
 import {RATES_2024, RATES_AS_OF_DATE} from '@/data/time-of-use';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import * as fs from 'node:fs/promises';
 
 type RateTime = 'offPeak' | 'midPeak' | 'onPeak';
 
