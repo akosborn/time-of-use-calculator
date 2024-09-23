@@ -12,7 +12,7 @@ type Season = typeof SEASONS[number];
 export default function Home() {
   const [season, setSeason] = useState<Season>(SEASONS[0]);
 
-  const [usageByTimeInkWh, setUsageByTimeInkWh] = useState<Record<RateTime, number>>({
+  const [usageByTimeInkWh, setUsageByTimeInkWh] = useState<Record<RateTime, number | undefined>>({
     offPeak: 1,
     midPeak: 1,
     onPeak: 1,
@@ -27,7 +27,7 @@ export default function Home() {
   const usageByTimeOfUseRate = Object.keys(usageByTimeInkWh).reduce<{ kWh: number; rateInCents: number }[]>((acc, timeKey) => {
     const kWh = usageByTimeInkWh[timeKey as unknown as RateTime] as number;
     const rateInCents = rateSummary.timeOfUse[timeKey as unknown as RateTime];
-    acc.push({ kWh, rateInCents });
+    acc.push({ kWh, rateInCents: rateInCents });
     return acc;
   }, []);
 
@@ -78,7 +78,7 @@ export default function Home() {
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-1">
               <label htmlFor="off-peak" className="block text-sm font-medium leading-6 text-gray-900">
-                Off-Peak
+                Off-Peak (kWh)
               </label>
               <div className="mt-2">
                 <input
@@ -86,7 +86,7 @@ export default function Home() {
                   name="off-peak"
                   type="number"
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={usageByTimeInkWh.offPeak}
+                  value={usageByTimeInkWh.offPeak === 0 ? undefined : usageByTimeInkWh.offPeak}
                   onChange={(event) => setUsageByTimeInkWh((prev) => ({
                     ...prev,
                     offPeak: event.target.valueAsNumber || 0
@@ -97,7 +97,7 @@ export default function Home() {
 
             <div className="sm:col-span-1">
               <label htmlFor="mid-peak" className="block text-sm font-medium leading-6 text-gray-900">
-                Mid-Peak
+                Mid-Peak (kWh)
               </label>
               <div className="mt-2">
                 <input
@@ -105,7 +105,7 @@ export default function Home() {
                   name="mid-peak"
                   type="number"
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={usageByTimeInkWh.midPeak}
+                  value={usageByTimeInkWh.midPeak === 0 ? undefined : usageByTimeInkWh.midPeak}
                   onChange={(event) => setUsageByTimeInkWh((prev) => ({
                     ...prev,
                     midPeak: event.target.valueAsNumber || 0
@@ -116,7 +116,7 @@ export default function Home() {
 
             <div className="sm:col-span-1">
               <label htmlFor="on-peak" className="block text-sm font-medium leading-6 text-gray-900">
-                On-Peak
+                On-Peak (kWh)
               </label>
               <div className="mt-2">
                 <input
@@ -124,7 +124,7 @@ export default function Home() {
                   name="on-peak"
                   type="number"
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  value={usageByTimeInkWh.onPeak}
+                  value={usageByTimeInkWh.onPeak === 0 ? undefined : usageByTimeInkWh.onPeak}
                   onChange={(event) => setUsageByTimeInkWh((prev) => ({
                     ...prev,
                     onPeak: event.target.valueAsNumber || 0
@@ -143,7 +143,7 @@ export default function Home() {
                   :
                   <>
                     Opt-Out is {Math.round(Math.abs(timeOfUseResults.timeOfUseDeltaPct) * 100)}%
-                    (${Math.abs(timeOfUseResults.timeOfUseDeltaInCents).toFixed(2)}) cheaper
+                    (${centsToDollars(Math.abs(timeOfUseResults.timeOfUseDeltaInCents))}) cheaper
                   </>
                 }
               </p>
